@@ -22,8 +22,10 @@ datasource db {
   // Pooled connection (used by the app + worker at runtime). On Vercel/Neon/
   // Supabase this is the pgbouncer/pooled URL.
   url       = env("DATABASE_URL")
-  // Direct (non-pooled) connection used only for `prisma migrate deploy`.
-  // Falls back to DATABASE_URL when unset (see schema note / .env.example).
+  // Direct (non-pooled) connection used by `prisma migrate deploy`.
+  // REQUIRED: set DIRECT_URL to the provider's non-pooling URL, or to the same
+  // value as DATABASE_URL for single-endpoint providers. (Prisma has no
+  // automatic fallback — a referenced env var must be present.)
   directUrl = env("DIRECT_URL")
 }
 

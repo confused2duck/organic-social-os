@@ -28,14 +28,20 @@ git push -u origin main
 Create a Postgres database (Vercel Postgres, Neon, or Supabase). You get a
 pooled URL and (usually) a direct URL.
 
-- Set `DATABASE_URL` (pooled) and `DIRECT_URL` (direct) in Vercel.
-- Migrations run automatically on deploy — `vercel.json` build command is
-  `prisma generate && prisma migrate deploy && next build`. The initial
-  migration is `prisma/migrations/20260101000000_init`.
-- Seed once (reference data + demo workspace) from your machine, pointed at the
-  managed DB, or via a one-off job:
+- Set `DATABASE_URL` in Vercel (the runtime connection). On Supabase + Vercel
+  use the **pooler** URL (IPv4): Transaction pooler `:6543` for `DATABASE_URL`.
+- **Migrations are applied out-of-band**, not in the Vercel build — the build is
+  `prisma generate && next build` and never connects to the DB. Apply migrations
+  from a machine that can reach the DB directly:
   ```bash
-  DATABASE_URL="<managed pooled url>" npm run db:seed
+  DATABASE_URL="<direct or session-pooler url>" DIRECT_URL="<same>" \
+    npx prisma migrate deploy
+  ```
+  (`DIRECT_URL` is only needed for this migrate step, not at Vercel runtime.)
+  The initial migration is `prisma/migrations/20260101000000_init`.
+- Seed once (reference data + demo workspace):
+  ```bash
+  DATABASE_URL="<url that can reach the db>" npm run db:seed
   ```
 
 **Local dev parity:** `docker compose up -d` starts Postgres 16 with the

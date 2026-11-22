@@ -13,7 +13,7 @@ set in the Vercel project settings / the worker host — never committed.**
 | Variable | Where | Secret | Source | Purpose |
 |---|---|---|---|---|
 | `DATABASE_URL` | Web, Worker, Build | **Yes** | Managed Postgres (Vercel Postgres / Neon / Supabase) — pooled URL | Runtime database connection |
-| `DIRECT_URL` | Build | **Yes** | Same provider — direct (non-pooled) URL | `prisma migrate deploy`. Set equal to `DATABASE_URL` if the provider does not pool |
+| `DIRECT_URL` | Migrations only (local / CI) | **Yes** | Same provider — direct / session-pooler URL | `prisma migrate deploy`. **Not required at Vercel runtime** (the build does not migrate). Set equal to `DATABASE_URL` if the provider has one endpoint |
 | `APP_BASE_URL` | Web | No | Your deployment's HTTPS origin | Builds the exact OAuth redirect URI; must match the value registered in Meta |
 | `APP_NAME` | Web, Worker | No | You | Display name |
 | `NODE_ENV` | Web, Worker | No | Platform (`production` on Vercel) | Runtime mode |
