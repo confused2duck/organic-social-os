@@ -1,0 +1,10 @@
+# Normalise line endings so the repo builds identically on Linux (Vercel).
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.mp4 binary
+*.ico binary
+*.db binary

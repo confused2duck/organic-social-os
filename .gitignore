@@ -1,0 +1,92 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js
+/.next/
+/out/
+next-env.d.ts
+
+# Production build
+/build
+/dist
+
+# ---------------------------------------------------------------------------
+# Secrets & environment  — NEVER commit real credentials or tokens.
+# Only .env.example (placeholders, no secrets) is tracked.
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.json
+**/credentials.json
+**/service-account*.json
+
+# Instagram / Meta / OAuth tokens dropped to disk (defensive)
+*access-token*
+*.token
+
+# ---------------------------------------------------------------------------
+# Database (SQLite legacy dev data). Postgres is used in dev (docker) + prod.
+# Schema + migrations ARE tracked; local data is not.
+# ---------------------------------------------------------------------------
+/prisma/dev.db
+/prisma/dev.db-journal
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# ---------------------------------------------------------------------------
+# Generated / uploaded media (rendered at runtime; large binaries). On the
+# deployment these live in persistent blob storage, not the repo.
+# ---------------------------------------------------------------------------
+/public/generated/**
+!/public/generated/.gitkeep
+/storage/**
+/uploads/**
+
+# ---------------------------------------------------------------------------
+# Company-owned source material — NOT for a public repository.
+# (The seed reads from prisma/data/*.json, not from this workbook.)
+# ---------------------------------------------------------------------------
+*.xlsx
+*.xls
+
+# Logs
+*.log
+npm-debug.log*
+logs/
+
+# Testing
+/coverage
+/playwright-report
+/test-results
+/.playwright
+
+# Deployment / tooling
+.vercel
+.turbo
+
+# Browser profiles / automation artefacts
+/.browser-profiles/
+/chrome-profile/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Local Claude Code machine config (contains absolute local paths)
+.claude/settings.json
+.claude/settings.local.json
+
+# Misc
+*.tsbuildinfo

@@ -1,0 +1,28 @@
+# Local Postgres for development parity with the managed Postgres used on Vercel.
+# Usage:
+#   docker compose up -d
+#   npm run db:push        # or: npm run db:migrate
+#   npm run db:seed
+#
+# The credentials below match the DATABASE_URL in .env.example's local section.
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: osos-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: osos
+      POSTGRES_PASSWORD: osos_dev_pw
+      POSTGRES_DB: osos
+    ports:
+      - "5432:5432"
+    volumes:
+      - osos_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U osos -d osos"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  osos_pgdata:

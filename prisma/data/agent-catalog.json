@@ -1,0 +1,354 @@
+[
+ {
+  "key": "social_analytics_agent",
+  "name": "Social Analytics Agent",
+  "agentSystem": "C",
+  "agentSystemName": "Performance Intelligence",
+  "activityCount": 52,
+  "domains": [
+   "Instagram Marketing",
+   "LinkedIn Marketing"
+  ],
+  "workstreams": [
+   "11. LinkedIn Analytics & Performance Reporting",
+   "16. Instagram Analytics & Performance Reporting"
+  ]
+ },
+ {
+  "key": "social_editorial_strategy_agent",
+  "name": "Social Editorial Strategy Agent",
+  "agentSystem": "D",
+  "agentSystemName": "Strategy & Calendar",
+  "activityCount": 44,
+  "domains": [
+   "Instagram Marketing",
+   "LinkedIn Marketing"
+  ],
+  "workstreams": [
+   "3. Content Strategy & Content Calendar"
+  ]
+ },
+ {
+  "key": "audience_growth_agent",
+  "name": "Audience Growth Agent",
+  "agentSystem": "F",
+  "agentSystemName": "Publishing & Community",
+  "activityCount": 34,
+  "domains": [
+   "Instagram Marketing",
+   "LinkedIn Marketing"
+  ],
+  "workstreams": [
+   "7. LinkedIn Follower Growth",
+   "9. Instagram Follower Growth"
+  ]
+ },
+ {
+  "key": "brand_reputation_agent",
+  "name": "Brand Reputation Agent",
+  "agentSystem": "F",
+  "agentSystemName": "Publishing & Community",
+  "activityCount": 28,
+  "domains": [
+   "Instagram Marketing",
+   "LinkedIn Marketing"
+  ],
+  "workstreams": [
+   "14. LinkedIn Maintenance & Brand Reputation",
+   "17. Instagram Maintenance & Brand Reputation"
+  ]
+ },
+ {
+  "key": "short_form_video_agent",
+  "name": "Short-Form Video Agent",
+  "agentSystem": "E",
+  "agentSystemName": "Creative Production",
+  "activityCount": 28,
+  "domains": [
+   "Instagram Marketing"
+  ],
+  "workstreams": [
+   "5. Instagram Reels Creation & Management"
+  ]
+ },
+ {
+  "key": "social_intelligence_agent",
+  "name": "Social Intelligence Agent",
+  "agentSystem": "B",
+  "agentSystemName": "Research & Trends",
+  "activityCount": 27,
+  "domains": [
+   "Instagram Marketing",
+   "LinkedIn Marketing"
+  ],
+  "workstreams": [
+   "10. LinkedIn Competitor Analysis",
+   "15. Instagram Competitor Analysis"
+  ]
+ },
+ {
+  "key": "linkedin_content_studio_agent",
+  "name": "LinkedIn Content Studio Agent",
+  "agentSystem": "E",
+  "agentSystemName": "Creative Production",
+  "activityCount": 25,
+  "domains": [
+   "LinkedIn Marketing"
+  ],
+  "workstreams": [
+   "4. LinkedIn Content Creation"
+  ]
+ },
+ {
+  "key": "creator_partnerships_agent",
+  "name": "Creator Partnerships Agent",
+  "agentSystem": "F",
+  "agentSystemName": "Publishing & Community",
+  "activityCount": 24,
+  "domains": [
+   "Influencer, Creator & UGC Operations",
+   "Instagram Marketing"
+  ],
+  "workstreams": [
+   "1. Influencer, Creator & UGC Operations",
+   "10. Instagram Influencer & Creator Marketing",
+   "2. Influencer, Creator & UGC Operations",
+   "3. Influencer, Creator & UGC Operations",
+   "4. Influencer, Creator & UGC Operations",
+   "5. Influencer, Creator & UGC Operations",
+   "6. Influencer, Creator & UGC Operations"
+  ]
+ },
+ {
+  "key": "social_creative_studio_agent",
+  "name": "Social Creative Studio Agent",
+  "agentSystem": "E",
+  "agentSystemName": "Creative Production",
+  "activityCount": 22,
+  "domains": [
+   "Instagram Marketing"
+  ],
+  "workstreams": [
+   "4. Instagram Feed Post Creation"
+  ]
+ },
+ {
+  "key": "stories_and_community_content_agent",
+  "name": "Stories & Community Content Agent",
+  "agentSystem": "E",
+  "agentSystemName": "Creative Production",
+  "activityCount": 20,
+  "domains": [
+   "Instagram Marketing"
+  ],
+  "workstreams": [
+   "6. Instagram Stories Management"
+  ]
+ },
+ {
+  "key": "instagram_community_agent",
+  "name": "Instagram Community Agent",
+  "agentSystem": "F",
+  "agentSystemName": "Publishing & Community",
+  "activityCount": 20,
+  "domains": [
+   "Instagram Marketing"
+  ],
+  "workstreams": [
+   "8. Instagram Community Management & Engagement"
+  ]
+ },
+ {
+  "key": "linkedin_page_operations_agent",
+  "name": "LinkedIn Page Operations Agent",
+  "agentSystem": "A",
+  "agentSystemName": "Brand Intelligence",
+  "activityCount": 18,
+  "domains": [
+   "LinkedIn Marketing"
+  ],
+  "workstreams": [
+   "1. LinkedIn Account Setup & Optimisation"
+  ]
+ },
+ {
+  "key": "instagram_account_operations_agent",
+  "name": "Instagram Account Operations Agent",
+  "agentSystem": "A",
+  "agentSystemName": "Brand Intelligence",
+  "activityCount": 18,
+  "domains": [
+   "Instagram Marketing"
+  ],
+  "workstreams": [
+   "1. Instagram Account Setup & Optimisation"
+  ]
+ },
+ {
+  "key": "instagram_strategy_agent",
+  "name": "Instagram Strategy Agent",
+  "agentSystem": "D",
+  "agentSystemName": "Strategy & Calendar",
+  "activityCount": 18,
+  "domains": [
+   "Instagram Marketing"
+  ],
+  "workstreams": [
+   "2. Instagram Strategy & Planning"
+  ]
+ },
+ {
+  "key": "linkedin_strategy_agent",
+  "name": "LinkedIn Strategy Agent",
+  "agentSystem": "D",
+  "agentSystemName": "Strategy & Calendar",
+  "activityCount": 17,
+  "domains": [
+   "LinkedIn Marketing"
+  ],
+  "workstreams": [
+   "2. LinkedIn Strategy & Planning"
+  ]
+ },
+ {
+  "key": "linkedin_community_agent",
+  "name": "LinkedIn Community Agent",
+  "agentSystem": "F",
+  "agentSystemName": "Publishing & Community",
+  "activityCount": 17,
+  "domains": [
+   "LinkedIn Marketing"
+  ],
+  "workstreams": [
+   "6. LinkedIn Community Management & Engagement"
+  ]
+ },
+ {
+  "key": "social_commerce_and_lead_agent",
+  "name": "Social Commerce & Lead Agent",
+  "agentSystem": "F",
+  "agentSystemName": "Publishing & Community",
+  "activityCount": 17,
+  "domains": [
+   "Instagram Marketing"
+  ],
+  "workstreams": [
+   "11. Instagram Lead Generation & Sales"
+  ]
+ },
+ {
+  "key": "carousel_and_document_design_agent",
+  "name": "Carousel & Document Design Agent",
+  "agentSystem": "E",
+  "agentSystemName": "Creative Production",
+  "activityCount": 16,
+  "domains": [
+   "Instagram Marketing"
+  ],
+  "workstreams": [
+   "7. Instagram Carousel Content"
+  ]
+ },
+ {
+  "key": "social_discoverability_agent",
+  "name": "Social Discoverability Agent",
+  "agentSystem": "B",
+  "agentSystemName": "Research & Trends",
+  "activityCount": 14,
+  "domains": [
+   "Instagram Marketing"
+  ],
+  "workstreams": [
+   "12. Instagram SEO & Discoverability"
+  ]
+ },
+ {
+  "key": "live_and_events_agent",
+  "name": "Live & Events Agent",
+  "agentSystem": "F",
+  "agentSystemName": "Publishing & Community",
+  "activityCount": 13,
+  "domains": [
+   "Instagram Marketing"
+  ],
+  "workstreams": [
+   "14. Instagram Live & Event Management"
+  ]
+ },
+ {
+  "key": "social_publishing_agent",
+  "name": "Social Publishing Agent",
+  "agentSystem": "F",
+  "agentSystemName": "Publishing & Community",
+  "activityCount": 12,
+  "domains": [
+   "LinkedIn Marketing"
+  ],
+  "workstreams": [
+   "5. Content Publishing & Scheduling"
+  ]
+ },
+ {
+  "key": "thought_leadership_agent",
+  "name": "Thought Leadership Agent",
+  "agentSystem": "E",
+  "agentSystemName": "Creative Production",
+  "activityCount": 12,
+  "domains": [
+   "LinkedIn Marketing"
+  ],
+  "workstreams": [
+   "13. LinkedIn Groups & Thought Leadership"
+  ]
+ },
+ {
+  "key": "employee_advocacy_agent",
+  "name": "Employee Advocacy Agent",
+  "agentSystem": "F",
+  "agentSystemName": "Publishing & Community",
+  "activityCount": 11,
+  "domains": [
+   "LinkedIn Marketing"
+  ],
+  "workstreams": [
+   "9. LinkedIn Employee Advocacy"
+  ]
+ },
+ {
+  "key": "youtube_growth_agent",
+  "name": "YouTube Growth Agent",
+  "agentSystem": "B",
+  "agentSystemName": "Research & Trends",
+  "activityCount": 7,
+  "domains": [
+   "YouTube Marketing & Video SEO"
+  ],
+  "workstreams": [
+   "1. YouTube Marketing & Video SEO",
+   "2. YouTube Marketing & Video SEO",
+   "3. YouTube Marketing & Video SEO",
+   "4. YouTube Marketing & Video SEO",
+   "5. YouTube Marketing & Video SEO",
+   "6. YouTube Marketing & Video SEO",
+   "7. YouTube Marketing & Video SEO"
+  ]
+ },
+ {
+  "key": "facebook_and_messenger_agent",
+  "name": "Facebook & Messenger Agent",
+  "agentSystem": "F",
+  "agentSystemName": "Publishing & Community",
+  "activityCount": 6,
+  "domains": [
+   "Facebook & Messenger Marketing"
+  ],
+  "workstreams": [
+   "1. Facebook & Messenger Marketing",
+   "2. Facebook & Messenger Marketing",
+   "3. Facebook & Messenger Marketing",
+   "4. Facebook & Messenger Marketing",
+   "5. Facebook & Messenger Marketing",
+   "6. Facebook & Messenger Marketing"
+  ]
+ }
+]

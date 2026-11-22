@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===========================================================================
+   Coral Horizon theme
+   Deep Cocoa #29191C · Dark Rose #5A3035 · Muted Coral #9F5056
+   Dusty Rose #C67F82 · Soft Blush #E4B6B1 · Warm Ivory #FAECE6
+   =========================================================================== */
+
+@layer base {
+  :root {
+    --background: 20 56% 95%;        /* Warm Ivory */
+    --foreground: 349 24% 13%;       /* Deep Cocoa */
+
+    --card: 28 60% 98%;
+    --card-foreground: 349 24% 13%;
+
+    --popover: 28 60% 99%;
+    --popover-foreground: 349 24% 13%;
+
+    --primary: 356 33% 47%;          /* Muted Coral */
+    --primary-foreground: 28 60% 98%;
+
+    --secondary: 8 48% 92%;          /* Soft Blush tint */
+    --secondary-foreground: 353 30% 27%; /* Dark Rose */
+
+    --muted: 10 42% 92%;
+    --muted-foreground: 353 16% 42%;
+
+    --accent: 357 38% 64%;           /* Dusty Rose */
+    --accent-foreground: 349 24% 13%;
+
+    --destructive: 0 72% 46%;
+    --destructive-foreground: 28 60% 98%;
+
+    --success: 150 46% 37%;
+    --success-foreground: 28 60% 98%;
+
+    --warning: 32 90% 46%;
+    --warning-foreground: 32 60% 14%;
+
+    --border: 8 46% 86%;             /* Soft Blush */
+    --input: 8 42% 84%;
+    --ring: 356 42% 52%;
+
+    /* Sidebar / dark surfaces (Deep Cocoa) */
+    --sidebar: 349 24% 13%;
+    --sidebar-2: 353 30% 20%;        /* Dark Rose for the gradient */
+    --sidebar-foreground: 20 56% 95%;
+
+    --radius: 0.8rem;
+  }
+
+  .dark {
+    --background: 349 24% 9%;
+    --foreground: 20 50% 93%;
+
+    --card: 349 22% 13%;
+    --card-foreground: 20 50% 93%;
+
+    --popover: 349 22% 13%;
+    --popover-foreground: 20 50% 93%;
+
+    --primary: 357 46% 62%;
+    --primary-foreground: 349 24% 10%;
+
+    --secondary: 353 22% 20%;
+    --secondary-foreground: 20 50% 93%;
+
+    --muted: 353 20% 18%;
+    --muted-foreground: 8 30% 72%;
+
+    --accent: 357 40% 60%;
+    --accent-foreground: 349 24% 10%;
+
+    --destructive: 0 63% 52%;
+    --destructive-foreground: 20 50% 96%;
+
+    --success: 150 44% 48%;
+    --success-foreground: 349 24% 10%;
+
+    --warning: 36 90% 56%;
+    --warning-foreground: 36 60% 10%;
+
+    --border: 353 18% 26%;
+    --input: 353 18% 28%;
+    --ring: 357 46% 62%;
+
+    --sidebar: 349 28% 10%;
+    --sidebar-2: 353 30% 16%;
+    --sidebar-foreground: 20 50% 93%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-feature-settings: "rlig" 1, "calt" 1;
+    /* Subtle warm sunset wash — fixed, very soft, never a photo. */
+    background-image:
+      radial-gradient(1100px 520px at 88% -8%, hsl(357 50% 80% / 0.55), transparent 60%),
+      radial-gradient(900px 480px at -8% 108%, hsl(6 55% 84% / 0.5), transparent 60%);
+    background-attachment: fixed;
+  }
+  h1, h2, h3, h4 {
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--border));
+    border-radius: 9999px;
+  }
+
+  /* Glassmorphism — selective (login/onboarding, overlays). */
+  .glass {
+    background-color: hsl(28 60% 99% / 0.72);
+    backdrop-filter: blur(14px) saturate(1.1);
+    -webkit-backdrop-filter: blur(14px) saturate(1.1);
+    border: 1px solid hsl(8 46% 86% / 0.7);
+  }
+
+  /* Warm coral gradients. */
+  .coral-gradient {
+    background-image: linear-gradient(135deg, hsl(356 33% 47%), hsl(357 38% 60%));
+  }
+  .sunset-gradient {
+    background-image: linear-gradient(135deg, hsl(349 24% 13%) 0%, hsl(353 30% 27%) 42%, hsl(356 33% 47%) 78%, hsl(357 38% 64%) 100%);
+  }
+  .sidebar-gradient {
+    background-image: linear-gradient(185deg, hsl(var(--sidebar)) 0%, hsl(var(--sidebar-2)) 100%);
+  }
+  .text-gradient {
+    background: linear-gradient(120deg, hsl(356 33% 42%), hsl(357 38% 58%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
