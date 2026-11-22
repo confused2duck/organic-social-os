@@ -13,11 +13,27 @@
 // No account data is ever fabricated. Every failure is surfaced truthfully.
 // ===========================================================================
 
-const GRAPH = "https://graph.instagram.com";
+const IG_GRAPH = "https://graph.instagram.com";
+const FB_GRAPH = "https://graph.facebook.com";
 const OAUTH_AUTHORIZE = "https://www.instagram.com/oauth/authorize";
 const OAUTH_TOKEN = "https://api.instagram.com/oauth/access_token";
 
 const TIMEOUT_MS = Number(process.env.INTEGRATION_TIMEOUT_MS ?? 12_000);
+
+// Two Instagram API flavors are supported:
+//   instagram_login — "Instagram API with Instagram Login" (graph.instagram.com;
+//                      the token identifies the account; used by the OAuth flow).
+//   facebook_login  — "Instagram API with Facebook Login" / Instagram Graph API
+//                      (graph.facebook.com/<ig-account-id>; needs the numeric id).
+// The flavor is inferred from the token shape: Instagram-Login tokens start "IG".
+export type InstagramApiFlavor = "instagram_login" | "facebook_login";
+
+export function flavorForToken(token: string): InstagramApiFlavor {
+  return /^IG/.test(token) ? "instagram_login" : "facebook_login";
+}
+function apiBase(flavor: InstagramApiFlavor): string {
+  return flavor === "facebook_login" ? FB_GRAPH : IG_GRAPH;
+}
 
 // Scopes for the Instagram API with Instagram Login. Read + (reserved) publish
 // scope requested so the same connection can later be upgraded to publishing
@@ -82,8 +98,8 @@ export class InstagramApiError extends Error {
   }
 }
 
-async function graphGet<T>(path: string, params: Record<string, string>): Promise<T> {
-  const u = new URL(`${GRAPH}/${path.replace(/^\/+/, "")}`);
+async function graphGet<T>(base: string, path: string, params: Record<string, string>): Promise<T> {
+  const u = new URL(`${base}/${path.replace(/^\/+/, "")}`);
   for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v);
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
@@ -171,7 +187,7 @@ export interface LongLivedToken {
 /** Exchange a short-lived token for a long-lived (~60 day) token. */
 export async function exchangeForLongLivedToken(shortToken: string): Promise<LongLivedToken> {
   const cfg = instagramOAuthConfig();
-  const body = await graphGet<{ access_token: string; expires_in: number }>("access_token", {
+  const body = await graphGet<{ access_token: string; expires_in: number }>(IG_GRAPH, "access_token", {
     grant_type: "ig_exchange_token",
     client_secret: cfg.appSecret,
     access_token: shortToken,
@@ -195,24 +211,48 @@ export interface InstagramAccount {
   website?: string;
 }
 
-const ACCOUNT_FIELDS = [
-  "id",
-  "user_id",
-  "username",
-  "name",
-  "account_type",
-  "media_count",
-  "followers_count",
-  "follows_count",
-  "profile_picture_url",
-  "biography",
-  "website",
+const ACCOUNT_FIELDS_IG = [
+  "id", "user_id", "username", "name", "account_type", "media_count",
+  "followers_count", "follows_count", "profile_picture_url", "biography", "website",
+].join(",");
+// graph.facebook.com/<ig-id> does NOT expose user_id or account_type.
+const ACCOUNT_FIELDS_FB = [
+  "username", "name", "media_count", "followers_count", "follows_count",
+  "profile_picture_url", "biography", "website",
 ].join(",");
 
-export async function fetchAccount(token: string, igUserId?: string): Promise<InstagramAccount> {
-  const node = igUserId && igUserId.length > 0 ? igUserId : "me";
-  const raw = await graphGet<Record<string, unknown>>(`${graphVersion()}/${node}`, {
-    fields: ACCOUNT_FIELDS,
+export async function fetchAccount(
+  token: string,
+  opts: { flavor?: InstagramApiFlavor; igId?: string } = {},
+): Promise<InstagramAccount> {
+  const flavor = opts.flavor ?? flavorForToken(token);
+  const base = apiBase(flavor);
+
+  if (flavor === "facebook_login") {
+    if (!opts.igId) throw new InstagramApiError("Instagram account id is required for the Facebook-login flow.", 0);
+    const raw = await graphGet<Record<string, unknown>>(base, `${graphVersion()}/${opts.igId}`, {
+      fields: ACCOUNT_FIELDS_FB,
+      access_token: token,
+    });
+    const id = String(raw.id ?? opts.igId);
+    return {
+      id,
+      userId: id,
+      username: String(raw.username ?? ""),
+      name: raw.name ? String(raw.name) : undefined,
+      accountType: undefined,
+      mediaCount: typeof raw.media_count === "number" ? raw.media_count : undefined,
+      followersCount: typeof raw.followers_count === "number" ? raw.followers_count : undefined,
+      followsCount: typeof raw.follows_count === "number" ? raw.follows_count : undefined,
+      profilePictureUrl: raw.profile_picture_url ? String(raw.profile_picture_url) : undefined,
+      biography: raw.biography ? String(raw.biography) : undefined,
+      website: raw.website ? String(raw.website) : undefined,
+    };
+  }
+
+  const node = opts.igId && opts.igId.length > 0 ? opts.igId : "me";
+  const raw = await graphGet<Record<string, unknown>>(base, `${graphVersion()}/${node}`, {
+    fields: ACCOUNT_FIELDS_IG,
     access_token: token,
   });
   return {
@@ -254,8 +294,8 @@ const MEDIA_FIELDS = [
   "comments_count",
 ].join(",");
 
-export async function fetchMedia(token: string, igUserId: string, limit = 9): Promise<InstagramMedia[]> {
-  const raw = await graphGet<{ data?: Record<string, unknown>[] }>(`${graphVersion()}/${igUserId}/media`, {
+export async function fetchMedia(token: string, igUserId: string, flavor: InstagramApiFlavor, limit = 9): Promise<InstagramMedia[]> {
+  const raw = await graphGet<{ data?: Record<string, unknown>[] }>(apiBase(flavor), `${graphVersion()}/${igUserId}/media`, {
     fields: MEDIA_FIELDS,
     limit: String(limit),
     access_token: token,
@@ -284,11 +324,11 @@ export interface InstagramInsights {
  * account and the manage_insights permission; when unavailable we report that
  * truthfully instead of inventing numbers.
  */
-export async function fetchAccountInsights(token: string, igUserId: string): Promise<InstagramInsights> {
+export async function fetchAccountInsights(token: string, igUserId: string, flavor: InstagramApiFlavor): Promise<InstagramInsights> {
   try {
     const raw = await graphGet<{
       data?: { name: string; period?: string; total_value?: { value?: number }; values?: { value?: number }[] }[];
-    }>(`${graphVersion()}/${igUserId}/insights`, {
+    }>(apiBase(flavor), `${graphVersion()}/${igUserId}/insights`, {
       metric: "reach",
       period: "day",
       metric_type: "total_value",
@@ -333,11 +373,12 @@ export interface VerifyResult {
  */
 export async function verifyConnection(
   token: string,
-  opts: { expectedId?: string; grantedScopes?: string[]; withMedia?: boolean; withInsights?: boolean } = {},
+  opts: { igId?: string; expectedId?: string; grantedScopes?: string[]; withMedia?: boolean; withInsights?: boolean; flavor?: InstagramApiFlavor } = {},
 ): Promise<VerifyResult> {
+  const flavor = opts.flavor ?? flavorForToken(token);
   let account: InstagramAccount;
   try {
-    account = await fetchAccount(token);
+    account = await fetchAccount(token, { flavor, igId: opts.igId });
   } catch (e) {
     return {
       ok: false,
@@ -352,7 +393,7 @@ export async function verifyConnection(
   let recentMedia: InstagramMedia[] | undefined;
   if (opts.withMedia !== false) {
     try {
-      recentMedia = await fetchMedia(token, stableId, 9);
+      recentMedia = await fetchMedia(token, stableId, flavor, 9);
     } catch {
       recentMedia = undefined;
     }
@@ -360,7 +401,7 @@ export async function verifyConnection(
 
   let insights: InstagramInsights | undefined;
   if (opts.withInsights !== false) {
-    insights = await fetchAccountInsights(token, stableId);
+    insights = await fetchAccountInsights(token, stableId, flavor);
   }
 
   // Capabilities are derived from actually-granted scopes when known, otherwise

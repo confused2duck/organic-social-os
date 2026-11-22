@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { requireCompany } from "@/lib/tenant";
 import { prisma } from "@/lib/db";
-import { verifyConnection, testTokenConfigured } from "@/lib/integrations/instagram";
+import { verifyConnection, testTokenConfigured, flavorForToken } from "@/lib/integrations/instagram";
 import {
   upsertVerifiedInstagram,
   recordInstagramFailure,
@@ -26,17 +26,27 @@ export async function connectTestInstagramAction(): Promise<Result> {
   if (!token) {
     return { ok: false, error: "No test token configured. Set INSTAGRAM_TEST_ACCESS_TOKEN in the environment." };
   }
-  const expectedId = process.env.INSTAGRAM_TEST_ACCOUNT_ID?.trim() || undefined;
+  const flavor = flavorForToken(token);
+  const igId = process.env.INSTAGRAM_TEST_ACCOUNT_ID?.trim() || undefined;
+  if (flavor === "facebook_login" && !igId) {
+    return { ok: false, error: "Set INSTAGRAM_TEST_ACCOUNT_ID to the numeric Instagram account id — the Facebook-login token needs it." };
+  }
 
-  const verify = await verifyConnection(token, { expectedId, withMedia: true, withInsights: true });
+  const verify = await verifyConnection(token, {
+    flavor,
+    igId: flavor === "facebook_login" ? igId : undefined,
+    expectedId: flavor === "instagram_login" ? igId : undefined,
+    withMedia: true,
+    withInsights: true,
+  });
   if (!verify.ok || !verify.account) {
     const msg = verify.error || "Token verification failed.";
     await recordInstagramFailure(company.id, msg);
     revalidatePath("/connections");
     return { ok: false, error: msg };
   }
-  if (expectedId && verify.idMatches === false) {
-    const msg = `The token's account (${verify.account.userId || verify.account.id}) does not match INSTAGRAM_TEST_ACCOUNT_ID (${expectedId}).`;
+  if (flavor === "instagram_login" && igId && verify.idMatches === false) {
+    const msg = `The token's account (${verify.account.userId || verify.account.id}) does not match INSTAGRAM_TEST_ACCOUNT_ID (${igId}).`;
     await recordInstagramFailure(company.id, msg);
     revalidatePath("/connections");
     return { ok: false, error: msg };
@@ -62,7 +72,14 @@ export async function refreshInstagramAction(): Promise<Result> {
   if (!token) return { ok: false, error: "The stored credential is unavailable. Reconnect the account." };
 
   const scopes = conn.scopes ? (JSON.parse(conn.scopes) as string[]) : undefined;
-  const verify = await verifyConnection(token, { grantedScopes: scopes, withMedia: true, withInsights: true });
+  const flavor = flavorForToken(token);
+  const verify = await verifyConnection(token, {
+    flavor,
+    igId: flavor === "facebook_login" ? (conn.externalId ?? undefined) : undefined,
+    grantedScopes: scopes,
+    withMedia: true,
+    withInsights: true,
+  });
   if (!verify.ok || !verify.account) {
     const msg = verify.error || "Re-verification failed.";
     await recordInstagramFailure(company.id, msg);

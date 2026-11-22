@@ -13,6 +13,7 @@ import {
   verifyConnection,
   instagramOAuthConfig,
   testTokenConfigured,
+  flavorForToken,
   type InstagramMedia,
   type InstagramInsights,
   type InstagramAccount,
@@ -46,7 +47,14 @@ async function loadInstagramLive(conn: NonNullable<IgConn>): Promise<LiveSnapsho
     return { live: false, error: "Stored credential unavailable.", account: storedToAccount(conn, stored), insights: stored.insights ?? null };
   }
   const scopes = conn.scopes ? (JSON.parse(conn.scopes) as string[]) : undefined;
-  const v = await verifyConnection(token, { grantedScopes: scopes, withMedia: true, withInsights: true });
+  const flavor = flavorForToken(token);
+  const v = await verifyConnection(token, {
+    flavor,
+    igId: flavor === "facebook_login" ? (conn.externalId ?? undefined) : undefined,
+    grantedScopes: scopes,
+    withMedia: true,
+    withInsights: true,
+  });
   if (!v.ok || !v.account) {
     // Fall back to the last genuine snapshot, clearly labelled.
     return { live: false, error: v.error, account: storedToAccount(conn, stored), insights: stored.insights ?? null };
